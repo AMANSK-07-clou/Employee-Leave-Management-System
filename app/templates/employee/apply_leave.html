@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Apply Leave - ELMS</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+    <style>
+
+        .leave-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+        }
+
+        .leave-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .leave-card h2 {
+            margin-bottom: 10px;
+        }
+
+        .leave-card p {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            background: #2563eb;
+            color: white;
+        }
+
+        .submit-btn:hover {
+            opacity: 0.9;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            text-decoration: none;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="leave-container">
+
+    <a href="/employee/dashboard" class="back-btn">
+        ← Back to Dashboard
+    </a>
+
+    <div class="leave-card">
+
+        <h2>Apply for Leave</h2>
+
+        <p>
+            Submit your leave request for manager approval.
+        </p>
+
+        <form method="POST"
+              action="{{ url_for('auth.apply_leave') }}">
+
+            <div class="form-group">
+
+                <label for="leave_type">
+                    Leave Type
+                </label>
+
+                <select name="leave_type_id"
+                        id="leave_type"
+                        required>
+
+                    <option value="">
+                        Select Leave Type
+                    </option>
+
+                    {% for leave in leave_types %}
+
+                    <option value="{{ leave.leave_type_id }}">
+
+                        {{ leave.leave_type_name }}
+                        - Max {{ leave.max_days }} days
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="start_date">
+                    Start Date
+                </label>
+
+                <input
+                    type="date"
+                    name="start_date"
+                    id="start_date"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="end_date">
+                    End Date
+                </label>
+
+                <input
+                    type="date"
+                    name="end_date"
+                    id="end_date"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="reason">
+                    Reason
+                </label>
+
+                <textarea
+                    name="reason"
+                    id="reason"
+                    placeholder="Enter reason for leave..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <button type="submit"
+                    class="submit-btn">
+
+                Submit Leave Request
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

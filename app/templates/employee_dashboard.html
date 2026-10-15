@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Employee Dashboard - ELMS</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+
+<body>
+
+<div class="dashboard-container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-logo">E</div>
+            <div>
+                <h2>ELMS</h2>
+                <span>Employee Portal</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-menu">
+
+            <a href="#" class="menu-item active">
+                <span>▦</span>
+                Dashboard
+            </a>
+
+            <a href="#" class="menu-item">
+                <span>👤</span>
+                My Profile
+            </a>
+
+            <a href="#" class="menu-item">
+                <span>🏢</span>
+                My Department
+            </a>
+            <a href="{{ url_for('auth.attendance') }}" class="menu-item">
+                <span>📊</span>
+                Attendance
+            </a>
+
+            <a href="{{ url_for('auth.apply_leave') }}">
+                Apply Leave
+            </a>
+            <a href="{{ url_for('auth.leave_requests') }}" class="menu-item">
+                <span>📋</span>
+                My Leave Requests
+            </a>
+
+            <a href="{{ url_for('auth.leave_balance') }}" class="menu-item">
+                <span>💰</span>
+                Leave Balance   
+            </a>
+
+            <a href="{{ url_for('auth.leave_calendar') }}" class="menu-item">
+                <span>🗓️</span>
+                Leave Calendar
+            </a>
+
+            <a href="{{ url_for('auth.notifications') }}" class="menu-item">
+                <span>🔔</span>
+                Notifications
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <a href="/logout" class="menu-item logout">
+                <span>↪</span>
+                Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Top Header -->
+        <header class="top-header">
+
+            <div>
+                <h1>Dashboard</h1>
+                <p>Welcome back, {{ employee.employee_name }} 👋</p>
+            </div>
+
+            <div class="header-right">
+
+                <button class="notification-btn">
+                    🔔
+                    <span class="notification-dot"></span>
+                </button>
+
+                <div class="user-profile">
+
+                    <div class="avatar">
+                        {{ employee.employee_name[0] }}
+                    </div>
+
+                    <div class="user-info">
+                        <strong>{{ employee.employee_name }}</strong>
+                        <span>{{ employee.role_name }}</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- Employee Information -->
+        <section class="welcome-card">
+
+            <div class="welcome-text">
+
+                <span class="badge">Employee Portal</span>
+
+                <h2>Hello, {{ employee.employee_name }}!</h2>
+
+                <p>
+                    Manage your profile, attendance, leaves and
+                    employee information from your dashboard.
+                </p>
+
+            </div>
+
+            <div class="employee-avatar-large">
+                {{ employee.employee_name[0] }}
+            </div>
+
+        </section>
+
+
+        <!-- Statistics -->
+        <section class="stats-grid">
+
+            <div class="stat-card">
+
+                <div class="stat-icon blue">📅</div>
+
+                <div>
+                    <span>Leave Balance</span>
+                    <h3>{{ leave_balance }}</h3>
+                    <small>Days remaining</small>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon green">✓</div>
+
+                <div>
+                    <span>Attendance</span>
+                    <h3>{{ attendance_percentage }}%</h3>
+                    <small>This month</small>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon orange">⏳</div>
+
+                <div>
+                    <span>Pending Requests</span>
+                    <h3>{{ pending_requests }}</h3>
+                    <small>Leave requests</small>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon purple">🏢</div>
+
+                <div>
+                    <span>Department</span>
+                    <h3>{{ employee.department_name }}</h3>
+                    <small>{{ employee.department_id }}</small>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Main Grid -->
+        <section class="content-grid">
+
+            <!-- Employee Details -->
+            <div class="dashboard-card">
+
+                <div class="card-header">
+
+                    <div>
+                        <h3>My Information</h3>
+                        <p>Your employee details</p>
+                    </div>
+
+                    <button class="view-btn">
+                        View Profile
+                    </button>
+
+                </div>
+
+                <div class="info-grid">
+
+                    <div class="info-item">
+                        <span>Employee ID</span>
+                        <strong>{{ employee.employee_code }}</strong>
+                    </div>
+
+                    <div class="info-item">
+                        <span>Full Name</span>
+                        <strong>{{ employee.employee_name }}</strong>
+                    </div>
+
+                    <div class="info-item">
+                        <span>Email</span>
+                        <strong>{{ employee.email }}</strong>
+                    </div>
+
+                    <div class="info-item">
+                        <span>Department</span>
+                        <strong>{{ employee.department_name }}</strong>
+                    </div>
+
+                    <div class="info-item">
+                        <span>Role</span>
+                        <strong>{{ employee.role_name }}</strong>
+                    </div>
+
+                    <div class="info-item">
+                        <span>Employment Type</span>
+                        <strong>{{ employee.employment_type_name }}</strong>
+                    </div>
+
+                    <div class="info-item">
+                        <span>Status</span>
+                        <strong class="status-active">
+                            {{ employee.status_name }}
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Quick Actions -->
+            <div class="dashboard-card">
+
+                <div class="card-header">
+
+                    <div>
+                        <h3>Quick Actions</h3>
+                        <p>Frequently used options</p>
+                    </div>
+
+                </div>
+
+                <div class="quick-actions">
+
+                    <a href="#" class="action-card">
+                        <span>📝</span>
+                        <strong>Apply Leave</strong>
+                        <small>Submit a new leave request</small>
+                    </a>
+
+                    <a href="#" class="action-card">
+                        <span>🕐</span>
+                        <strong>Attendance</strong>
+                        <small>View your attendance</small>
+                    </a>
+
+                    <a href="#" class="action-card">
+                        <span>📊</span>
+                        <strong>Leave Balance</strong>
+                        <small>Check remaining leaves</small>
+                    </a>
+
+                    <a href="{{ url_for('auth.leave_history') }}" class="action-card"> 
+                        <span>📅</span> 
+                        <strong>Leave History</strong> 
+                        <small>View previous requests</small> 
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Recent Leave Requests -->
+        <section class="dashboard-card recent-section">
+
+            <div class="card-header">
+
+                <div>
+                    <h3>Recent Leave Requests</h3>
+                    <p>Your latest leave applications</p>
+                </div>
+
+                <button class="view-btn">
+                    View All
+                </button>
+
+            </div>
+
+            <div class="empty-state">
+
+                <div class="empty-icon">📋</div>
+
+                <h4>No leave requests yet</h4>
+
+                <p>
+                    Your submitted leave requests will appear here.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

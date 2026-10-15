@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Leave Balance - ELMS</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+            color: #1f2937;
+        }
+
+        .navbar {
+            background: #1f2937;
+            color: white;
+            padding: 18px 30px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h2 {
+            font-size: 22px;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: white;
+            background: #374151;
+            padding: 9px 15px;
+            border-radius: 6px;
+        }
+
+        .container {
+            padding: 30px;
+        }
+
+        .page-title {
+            margin-bottom: 25px;
+        }
+
+        .page-title h1 {
+            margin-bottom: 8px;
+        }
+
+        .page-title p {
+            color: #6b7280;
+        }
+
+        .balance-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(250px, 1fr));
+
+            gap: 20px;
+        }
+
+        .balance-card {
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 3px 10px rgba(0, 0, 0, 0.08);
+
+            transition: 0.3s;
+        }
+
+        .balance-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .balance-card h2 {
+            margin-bottom: 8px;
+        }
+
+        .description {
+            color: #6b7280;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            text-align: center;
+        }
+
+        .stat {
+            flex: 1;
+        }
+
+        .stat h3 {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .stat p {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .remaining {
+            margin-top: 20px;
+            padding: 12px;
+
+            background: #ecfdf5;
+            color: #047857;
+
+            border-radius: 8px;
+
+            text-align: center;
+        }
+
+        .empty {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            color: #6b7280;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="navbar">
+
+        <h2>ELMS - Leave Balance</h2>
+
+        <a href="{{ url_for('auth.employee_dashboard') }}"
+           class="back-btn">
+
+            ← Dashboard
+
+        </a>
+
+    </div>
+
+
+    <div class="container">
+
+
+        <div class="page-title">
+
+            <h1>My Leave Balance</h1>
+
+            <p>
+                View your allocated, used and remaining leave days.
+            </p>
+
+        </div>
+
+
+        {% if leave_balances %}
+
+        <div class="balance-grid">
+
+
+            {% for leave in leave_balances %}
+
+            <div class="balance-card">
+
+                <h2>
+                    {{ leave.leave_type_name }}
+                </h2>
+
+                <p class="description">
+                    {{ leave.description }}
+                </p>
+
+
+                <div class="stats">
+
+
+                    <div class="stat">
+
+                        <h3>Allocated</h3>
+
+                        <p>
+                            {{ leave.allocated_days }}
+                        </p>
+
+                    </div>
+
+
+                    <div class="stat">
+
+                        <h3>Used</h3>
+
+                        <p>
+                            {{ leave.used_days }}
+                        </p>
+
+                    </div>
+
+
+                    <div class="stat">
+
+                        <h3>Remaining</h3>
+
+                        <p>
+                            {{ leave.remaining_days }}
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="remaining">
+
+                    {{ leave.remaining_days }}
+                    days remaining
+
+                </div>
+
+
+            </div>
+
+            {% endfor %}
+
+
+        </div>
+
+        {% else %}
+
+        <div class="empty">
+
+            No leave balance records found.
+
+        </div>
+
+        {% endif %}
+
+
+    </div>
+
+
+</body>
+
+</html>

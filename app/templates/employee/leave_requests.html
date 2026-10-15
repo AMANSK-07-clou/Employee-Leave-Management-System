@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>My Leave Requests - ELMS</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+
+        body {
+            background: #f4f6f9;
+            color: #1f2937;
+        }
+
+
+        .navbar {
+            background: #1f2937;
+            color: white;
+
+            padding: 18px 30px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        .navbar h2 {
+            font-size: 22px;
+        }
+
+
+        .back-btn {
+            text-decoration: none;
+            color: white;
+
+            background: #374151;
+
+            padding: 9px 15px;
+
+            border-radius: 6px;
+        }
+
+
+        .container {
+            padding: 30px;
+        }
+
+
+        .page-title {
+            margin-bottom: 25px;
+        }
+
+
+        .page-title h1 {
+            margin-bottom: 8px;
+        }
+
+
+        .page-title p {
+            color: #6b7280;
+        }
+
+
+        .table-container {
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 3px 10px rgba(0, 0, 0, 0.08);
+
+            overflow-x: auto;
+        }
+
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 1000px;
+        }
+
+
+        th,
+        td {
+            padding: 14px;
+
+            border-bottom: 1px solid #e5e7eb;
+
+            text-align: left;
+
+            vertical-align: top;
+        }
+
+
+        th {
+            background: #f3f4f6;
+
+            font-size: 14px;
+        }
+
+
+        td {
+            font-size: 14px;
+        }
+
+
+        /* Status Badges */
+
+        .status {
+            display: inline-block;
+
+            padding: 6px 12px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+
+            font-weight: bold;
+        }
+
+
+        .pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+
+        .approved {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+
+        .rejected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+
+        .cancelled {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+
+        .history {
+            min-width: 180px;
+        }
+
+
+        .history-title {
+            font-weight: bold;
+
+            margin-bottom: 6px;
+        }
+
+
+        .history-name {
+            color: #374151;
+
+            margin-bottom: 4px;
+        }
+
+
+        .history-comment {
+            color: #6b7280;
+
+            font-size: 13px;
+
+            margin-bottom: 4px;
+        }
+
+
+        .history-date {
+            color: #9ca3af;
+
+            font-size: 12px;
+        }
+
+
+        .no-history {
+            color: #9ca3af;
+
+            font-size: 13px;
+        }
+
+
+        .reason {
+            max-width: 180px;
+            word-wrap: break-word;
+        }
+
+
+        .empty {
+            text-align: center;
+
+            padding: 40px;
+
+            color: #6b7280;
+        }
+
+
+        .apply-btn {
+            display: inline-block;
+
+            margin-top: 20px;
+
+            text-decoration: none;
+
+            background: #2563eb;
+
+            color: white;
+
+            padding: 10px 18px;
+
+            border-radius: 6px;
+        }
+
+
+        .apply-btn:hover {
+            background: #1d4ed8;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- Navbar -->
+
+    <div class="navbar">
+
+        <h2>ELMS - My Leave Requests</h2>
+
+        <a href="{{ url_for('auth.employee_dashboard') }}"
+           class="back-btn">
+
+            ← Dashboard
+
+        </a>
+
+    </div>
+
+
+
+    <div class="container">
+
+
+        <!-- Page Header -->
+
+        <div class="page-title">
+
+            <h1>My Leave Requests</h1>
+
+            <p>
+                Track your leave applications and approval history.
+            </p>
+
+        </div>
+
+
+
+        {% if requests %}
+
+
+        <div class="table-container">
+
+
+            <table>
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>Request ID</th>
+
+                        <th>Leave Type</th>
+
+                        <th>Start Date</th>
+
+                        <th>End Date</th>
+
+                        <th>Reason</th>
+
+                        <th>Status</th>
+
+                        <th>Approval History</th>
+
+                    </tr>
+
+                </thead>
+
+
+
+                <tbody>
+
+
+                    {% for request in requests %}
+
+
+                    <tr>
+
+
+                        <!-- Request ID -->
+
+                        <td>
+
+                            #{{ request.leave_request_id }}
+
+                        </td>
+
+
+
+                        <!-- Leave Type -->
+
+                        <td>
+
+                            {{ request.leave_type_name }}
+
+                        </td>
+
+
+
+                        <!-- Start Date -->
+
+                        <td>
+
+                            {{ request.start_date }}
+
+                        </td>
+
+
+
+                        <!-- End Date -->
+
+                        <td>
+
+                            {{ request.end_date }}
+
+                        </td>
+
+
+
+                        <!-- Reason -->
+
+                        <td class="reason">
+
+                            {{ request.reason }}
+
+                        </td>
+
+
+
+                        <!-- Status -->
+
+                        <td>
+
+
+                            {% if request.status_name == "Pending" %}
+
+                                <span class="status pending">
+                                    Pending
+                                </span>
+
+
+                            {% elif request.status_name == "Approved" %}
+
+                                <span class="status approved">
+                                    Approved
+                                </span>
+
+
+                            {% elif request.status_name == "Rejected" %}
+
+                                <span class="status rejected">
+                                    Rejected
+                                </span>
+
+
+                            {% elif request.status_name == "Cancelled" %}
+
+                                <span class="status cancelled">
+                                    Cancelled
+                                </span>
+
+
+                            {% else %}
+
+                                <span class="status">
+                                    {{ request.status_name }}
+                                </span>
+
+                            {% endif %}
+
+
+                        </td>
+
+
+
+                        <!-- Approval History -->
+
+                        <td class="history">
+
+
+                            {% if request.approval_status %}
+
+
+                                <div class="history-title">
+
+                                    {% if request.approval_status == "Approved" %}
+
+                                        🟢 Approved
+
+                                    {% elif request.approval_status == "Rejected" %}
+
+                                        🔴 Rejected
+
+                                    {% else %}
+
+                                        {{ request.approval_status }}
+
+                                    {% endif %}
+
+                                </div>
+
+
+                                <div class="history-name">
+
+                                    By:
+                                    {{ request.approver_name }}
+
+                                </div>
+
+
+                                {% if request.comments %}
+
+                                    <div class="history-comment">
+
+                                        💬 {{ request.comments }}
+
+                                    </div>
+
+                                {% endif %}
+
+
+                                {% if request.approved_at %}
+
+                                    <div class="history-date">
+
+                                        📅 {{ request.approved_at }}
+
+                                    </div>
+
+                                {% endif %}
+
+
+                            {% else %}
+
+
+                                <span class="no-history">
+
+                                    No action yet
+
+                                </span>
+
+
+                            {% endif %}
+
+
+                        </td>
+
+
+                    </tr>
+
+
+                    {% endfor %}
+
+
+                </tbody>
+
+
+            </table>
+
+
+        </div>
+
+
+        {% else %}
+
+
+        <div class="table-container">
+
+            <div class="empty">
+
+                <h3>No Leave Requests</h3>
+
+                <p>
+                    You have not submitted any leave requests yet.
+                </p>
+
+
+                <a href="{{ url_for('auth.apply_leave') }}"
+                   class="apply-btn">
+
+                    Apply for Leave
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        {% endif %}
+
+
+    </div>
+
+
+</body>
+
+</html>

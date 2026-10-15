@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+env/
+
+# Secrets and configuration
+.env
+.env.*
+!.env.example
+config.py
+
+# Local database test files
+test_db.py
+
+# Editor and system files
+.vscode/
+.DS_Store
+Thumbs.db
